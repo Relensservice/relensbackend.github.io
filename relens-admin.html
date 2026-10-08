@@ -5,6 +5,13 @@
 <title>ReLens staff</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
+<meta name="theme-color" content="#0f2a3f">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ReLens">
 <style>
 :root{--bg:#f4f8f8;--panel:#fff;--ink:#0f2a3f;--mute:#566b78;--line:#cfdde1;--glass:#e3eff1;--acc:#0e7c86;--accink:#fff;--gold:#c98f0a;--bad:#b3261e;--good:#12703a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1a24;--panel:#112636;--ink:#e6f1f4;--mute:#92aab6;--line:#24404f;--glass:#163446;--acc:#3cc4cf;--accink:#06222a;--gold:#f0b429;--bad:#ff8a80;--good:#6fdc9a}}
@@ -249,6 +256,7 @@ document.querySelectorAll('nav button').forEach(b => b.onclick = () => {
   $('#s-orders').hidden = b.dataset.t !== 'orders'; $('#s-promos').hidden = b.dataset.t !== 'promos';
   if (b.dataset.t === 'promos') loadPromos();
 });
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 boot();
 </script>
 </body>
