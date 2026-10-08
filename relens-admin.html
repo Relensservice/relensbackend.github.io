@@ -115,8 +115,8 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:9px 6px;
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const RELENS_URL = 'https://YOUR-PROJECT.supabase.co';
-const RELENS_KEY = 'YOUR-ANON-PUBLIC-KEY';
+const RELENS_URL = 'https://wspnpvbbmkwyzlymdnlb.supabase.co';
+const RELENS_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndzcG5wdmJibWt3eXpseW1kbmxiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyNjc1NDAsImV4cCI6MjEwNjg0MzU0MH0.3RJcP0ZB86s2l5dqBWGal9AtHWiIASDIMAYuW_v7Gi8';
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -137,10 +137,15 @@ async function boot() {
 }
 
 async function signIn() {
+  if (!sb) return; // keys not added yet: boot() already explains this
   $('#lmsg').textContent = 'Signing in...';
-  const { data, error } = await sb.auth.signInWithPassword({ email: $('#em').value.trim(), password: $('#pw').value });
-  if (error) { $('#lmsg').innerHTML = '<span class="err">' + esc(error.message) + '</span>'; return; }
-  enter(data.user);
+  try {
+    const { data, error } = await sb.auth.signInWithPassword({ email: $('#em').value.trim(), password: $('#pw').value });
+    if (error) { $('#lmsg').innerHTML = '<span class="err">' + esc(error.message) + '</span>'; return; }
+    await enter(data.user);
+  } catch (err) {
+    $('#lmsg').innerHTML = '<span class="err">' + esc(err.message || 'Could not sign in. Check your internet and try again.') + '</span>';
+  }
 }
 $('#lgo').onclick = signIn;
 $('#pw').addEventListener('keydown', e => { if (e.key === 'Enter') signIn(); });
